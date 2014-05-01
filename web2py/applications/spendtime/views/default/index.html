@@ -1,0 +1,24 @@
+{{left_sidebar_enabled,right_sidebar_enabled=False,('message' in globals())}}
+{{extend 'layout.html'}}
+
+{{if 'message' in globals():}}
+<h3>{{=message}}</h3>
+
+<h4>{{=T('This service is designed to calculate spent time spent on social networks.')}}</h4>
+<ol>
+  <li>{{=T('For use service at first you must register.')}}</li>
+  <li>{{=T('After you might connect your social accounts.')}}</li>
+  <li>{{=T('Next your step is choose what account you want to monitor.')}}</li>
+  <li>{{=T('And now after that when you was online in selected social account, app will record it and will show on your '
+  'next visit or after week you will received email with timeline.')}}</li>
+  <li>{{=T('Gud luck!')}}</li>
+</ol>
+{{elif 'content' in globals():}}
+{{=content}}
+{{else:}}
+{{=BEAUTIFY(response._vars)}}
+{{pass}}
+
+{{block right_sidebar}}
+<img src={{=URL('static', 'images/watch.jpg')}}>
+{{end}}
