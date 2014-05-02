@@ -99,10 +99,10 @@ use_janrain(auth, filename='private/janrain.key')
 # auth.enable_record_versioning(db)
 
 ## Define oauth application id and secret.
-FB_CLIENT_ID='681470318582361'
-FB_CLIENT_SECRET="cb5b80069e23cee1ea085ad6be1cd159"
-VK_CLIENT_ID='4254824'
-VK_CLIENT_SECRET="75qxexahQqnAWTgjxqF6"
+FB_CLIENT_ID=''
+FB_CLIENT_SECRET=""
+VK_CLIENT_ID=''
+VK_CLIENT_SECRET=""
 VK_REDIRECT_URI=FB_REDIRECT_URI="http://127.0.0.1:8000/spendtime/default/user/profile"
 
 
