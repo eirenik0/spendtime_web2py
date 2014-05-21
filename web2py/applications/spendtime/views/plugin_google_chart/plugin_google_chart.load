@@ -2,7 +2,7 @@
  <script type="text/javascript">
 
       // Load the Visualization API and the piechart package.
-      var options = {packages:['corechart'],callback:drawChart}
+      var options = {packages:['timeline'],callback:drawChart}
       google.load('visualization', '1.0', options);
 
 
@@ -23,10 +23,19 @@
         var parsed_json = JSON.parse(jsonData)
         var graph_array = parsed_json.data
         //var data = window.JSON.stringify(parsed_json.data);
-        var data = google.visualization.arrayToDataTable(graph_array);
+        for(var i=0;i<graph_array.length;i++){
+            console.log(graph_array[i]);
+            graph_array[i][1] = new Date(graph_array[i][1]);
+            graph_array[i][2] = new Date(graph_array[i][2]);
+        }
+        console.log(graph_array);
+        var dataTable = new google.visualization.DataTable();
+        dataTable.addColumn({ type: 'string', id: 'Day' });
+        dataTable.addColumn({ type: 'date', id: 'Start' });
+        dataTable.addColumn({ type: 'date', id: 'End' });
+        dataTable.addRows(graph_array);
 
         // Set chart options
-
 
         var options = {{=XML(options_dict)}}
 
@@ -47,12 +56,15 @@
             case 'line':
                 var chart = new google.visualization.LineChart(document.getElementById(div_id));
                 break;
+            case 'timeline':
+                var chart = new google.visualization.Timeline(document.getElementById(div_id));
+                break;
             default:
                 var chart = new google.visualization.PieChart(document.getElementById(div_id));
                 break
 
         }
-        if (chart) { chart.draw(data, options) }
+        if (chart) { chart.draw(dataTable, options) }
       }
     </script>
 

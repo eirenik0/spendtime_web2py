@@ -1,4 +1,5 @@
 
+from datetime import datetime
 
 def plugin_google_chart():
     """used with the .load view to create a google chart
@@ -28,10 +29,22 @@ def plugin_return_data():
     The URL should have a .json suffix
     This can also use the @auth.requires_signature() decorator
     """
-    data = [['Year','Sales','Expenses'],["2004",1000,400],["2005",1100,440],["2006",1200,600],
-            ["2007",1500,800],["2008",1600,850],["2009",1800,900]]
+    user_id = auth.user_id
+    data=None
+    if request.vars.social_type=='vk':
+        timeline_table = db(db.timeline.user_extra_id==auth.user_id).select()
+        social_type = db(db.user_extra.id==db.timeline.user_extra_id).select()[0]['user_extra']['social_type']
+        # add field if end_time not empty
+        data = [[t['week_day'], t['start_time'], t['end_time']]
+                for t in timeline_table
+                if t['end_time'] and social_type=='vk']
+    elif request.vars.social_type=='fb':
+        timeline_table = db(db.timeline.user_extra_id==auth.user_id).select()
+        social_type = db(db.user_extra.id==db.timeline.user_extra_id).select()[0]['user_extra']['social_type']
+        # add field if end_time not empty
+        data = [[t['week_day'], t['start_time'], t['end_time']] for t in timeline_table if t['end_time'] and social_type=='fb']
+    # data =[[T('Sunday ')+'9 '+T('May'),'2014-05-20T02:59:34.349379','2014-05-20T03:00:37.337916'],
+    #        ['Monday 6 April','2014-05-20T03:00:45.337916','2014-05-20T04:00:37.337916']]
+    if not data: request['data']=None
     return dict(data=data)
 
-
-def plugin_usage_example():
-    return dict()

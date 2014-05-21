@@ -1,33 +1,36 @@
+
 {{extend 'layout.html'}}
-<script type="text/javascript" src="https://www.google.com/jsapi?autoload={'modules':[{'name':'visualization',
-       'version':'1','packages':['timeline']}]}"></script>
-<script type="text/javascript">
+<!-- need to source this in any view which has a LOAD chart -->
+<script src="https://www.google.com/jsapi" type="text/javascript"></script>
 
-    google.setOnLoadCallback(drawChart);
-function drawChart() {
+<!-- Here, data and options same for both charts -->
+<!-- user_signature works if using logged-in users ... not well tested -->
+{{ data_url = URL('plugin_google_chart','plugin_return_data.json', vars=dict(social_type=request.vars.social_type),user_signature=True)
+  #options are documented at https://developers.google.com/chart/
+  options ={
+        'hAxis': {'format': 'HH:mm'},
+        'title':'','width':0,'height':0,
+    'enableInteractivity':'true'}
+          }}
 
-  var container = document.getElementById('example5.1');
-  var chart = new google.visualization.Timeline(container);
-  var dataTable = new google.visualization.DataTable();
-  dataTable.addColumn({ type: 'string', id: 'Room' });
-  dataTable.addColumn({ type: 'string', id: 'Name' });
-  dataTable.addColumn({ type: 'date', id: 'Start' });
-  dataTable.addColumn({ type: 'date', id: 'End' });
-  dataTable.addRows([
-    [ 'Magnolia Room', 'Beginning JavaScript',       new Date(0,0,0,12,0,0),  new Date(0,0,0,13,30,0) ],
-    [ 'Magnolia Room', 'Intermediate JavaScript',    new Date(0,0,0,14,0,0),  new Date(0,0,0,15,30,0) ],
-    [ 'Magnolia Room', 'Advanced JavaScript',        new Date(0,0,0,16,0,0),  new Date(0,0,0,17,30,0) ],
-    [ 'Willow Room',   'Beginning Google Charts',    new Date(0,0,0,12,30,0), new Date(0,0,0,14,0,0) ],
-    [ 'Willow Room',   'Intermediate Google Charts', new Date(0,0,0,14,30,0), new Date(0,0,0,16,0,0) ],
-    [ 'Willow Room',   'Advanced Google Charts',     new Date(0,0,0,16,30,0), new Date(0,0,0,18,0,0) ]]);
 
-  var options = {
-    timeline: { colorByRowLabel: true }
-  };
+{{ if hours: }}
 
-  chart.draw(dataTable, options);
-}
-
-</script>
-
-<div id="example5.1" style="width: 900px; height: 100px;"></div>
+    <div class="well span8">
+    {{=LOAD('plugin_google_chart','plugin_google_chart.load',user_signature=True,ajax=True,
+        vars={'type':'timeline','data_url':data_url,'options_dict':options})
+    }}
+    </div>
+    <div class="span2 well">
+        <ul class="nav nav-tabs vert">
+          <li class="{{='active' if request.vars.social_type=='vk' else ''}}"><a href="?social_type=vk">VK</a></li>
+          <li cass="{{='active' if request.vars.social_type=='fb' else ''}}"><a href="?social_type=fb">Facebook</a></li>
+        </ul>
+        <h3>{{=T('All time in')}} {{=request.vars.social_type or 'vk'}}:</h3>
+        <h3>{{=hours}} {{=T('hours')}}</h3>
+    </div>
+{{ else: }}
+        <div class="span10 center">
+           <h1>{{=T('You don\'nt have logged time.Come back later.')}}</h1>
+        </div>
+{{ pass }}

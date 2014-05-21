@@ -12,6 +12,10 @@ if request.args(0)=='login':
     if not 'request_reset_password' in auth.settings.actions_disabled:
         form.add_button(T('Lost Password'),URL(args='request_reset_password'),_class='btn')
     pass
+    if not 'profile' in auth.settings.actions_disabled:
+
+        pass
+    pass
 pass
 =form
 }}
@@ -28,8 +32,11 @@ jQuery("#web2py_user_form input:visible:enabled:first").focus();
 
 {{ if social: }}
 <div class="span4">
-<h3>{{=T('Connect social ')}}</h3>
-<a href="http://oauth.vk.com/authorize?client_id=4254824&display=page&scope=notify,friends,status,&redirect_uri=http://127.0.0.1:8000/spendtime/default/user/profile"> <img src={{=URL('static', 'images/vk_big.png')}}></a>
-<a href=" "> <img src={{=URL('static', 'images/fb_big.png')}}></a>
+    <h3>{{=T('Connect social ')}}</h3>
+    <a href="vk"> <img src={{=URL('static', 'images/vk_big.png')}}></a>
+   <!--<a href="facebook"> <img src={{=URL('static', 'images/fb_big.png')}}></a>-->
+</div>
+<div class="span8">
+    {{=grid}}
 </div>
 {{ pass }}
