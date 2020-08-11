@@ -16,8 +16,8 @@ def plugin_google_chart():
     """
     chart_type = request.vars.type
     data_url = request.vars.data_url
-    options_dict = request.vars.options_dict or ''
     if chart_type and data_url:
+        options_dict = request.vars.options_dict or ''
         return dict(chart_type=chart_type,data_url=data_url,
                     options_dict=options_dict)
     else:

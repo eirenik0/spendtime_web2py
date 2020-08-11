@@ -34,9 +34,6 @@ def check_online(type='vk'):
                     logger.debug('Update')
                     timeline_table[-1].end_time=now_time.isoformat()
                     timeline_table[-1].update_record()
-        elif type == 'facebook':
-            pass
-
     return True or False
 
 # def write_to_db():
